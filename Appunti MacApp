@@ -1,0 +1,1 @@
+	TApplication.OpenNew		aDoc := DoMakeDocument;		aDoc.DoInitialState;		aDoc.DoMakeViews;		aDoc.ShowWindows;	TApplication.OpenOld		aDoc := DoMakeDocument;		aDoc.ReadFromFile;		aDoc.DoMakeViews;		aDoc.ShowWindows;	TDocument.Revert		Self.FreeData;		IF save exists THEN			Self.ReadFromFile		ELSE			Self.DoInitialState		Self.ShowReverted

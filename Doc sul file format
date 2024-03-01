@@ -1,1 +1,70 @@
-Descrizione del formato dei doc di EasyFit------------------------------------------Versioni da 1.0d0 fino a 1.0d5: obsolete, da gettare.----------------Versioni da 1.0d6 (credo) fino a 1.0d12: 	1. ExpDataTable	2. ParamsTable	3. WeightsTable	4. Std. Res. Table	5. testo dell' user model----------------Versione 1.0d13 fino a 1.0d14:		- versione dell'applicazione che ha generato il documento	- numero del modello selezionato	- opzione di pesatura	- fFitState	- miscellanea	- ExpDataTable	- ParamsTable	- WeightsTable	- Std. Res. Table	- testo dell' user model	- testo della finestra msgs	----------------Versione 1.0d24:	Nota: 		- prima dei dati relativi a ciascuna tabella scriviamo il			nome della tabella. 		- Abbiamo eliminato fFitState	- versione dell'applicazione che ha generato il documento	- numero del modello selezionato	- opzione di pesatura	- miscellanea	- ExpDataTable	- ParamsTable	- WeightsTable	- Std. Res. Table		[...] le altre tabelle	- testo dell' user model	- testo della finestra msgs-------------------------Versione 1.0a1	- versione dell'applicazione che ha generato il documento	- numero del modello selezionato	- opzione di pesatura	- miscellanea	- plot options miscellanea	-	[...] le tabelle  - WriteWindowShapeData(fExpDataTable.fTableWindow);  - WriteWindowShapeData(fParamsTable.fTableWindow);  - WriteWindowShapeData(fWeightsTable.fTableWindow);  - WriteWindowShapeData(fStdResTable.fTableWindow);  - WriteWindowShapeData(fDosesTable.fTableWindow);  - WriteWindowShapeData(fConstraintsTable.fTableWindow);	- WriteWindowShapeData(fMessagesWindow);	-	WriteWindowShapeData(fDataAndFuncPlotWindow);	-	WriteWindowShapeData(fStdResPlotWindow);	- testo dell' user model	- testo della finestra msgs
+
+Descrizione del formato dei doc di EasyFit
+------------------------------------------
+
+Versioni da 1.0d0 fino a 1.0d5: obsolete, da gettare.
+
+----------------
+Versioni da 1.0d6 (credo) fino a 1.0d12: 
+
+	1. ExpDataTable
+	2. ParamsTable
+	3. WeightsTable
+	4. Std. Res. Table
+	5. testo dell' user model
+
+----------------
+Versione 1.0d13 fino a 1.0d14:
+	
+	- versione dell'applicazione che ha generato il documento
+	- numero del modello selezionato
+	- opzione di pesatura
+	- fFitState
+	- miscellanea
+	- ExpDataTable
+	- ParamsTable
+	- WeightsTable
+	- Std. Res. Table
+	- testo dell' user model
+	- testo della finestra msgs
+	
+----------------
+
+Versione 1.0d24:
+	Nota: 
+		- prima dei dati relativi a ciascuna tabella scriviamo il
+			nome della tabella. 
+		- Abbiamo eliminato fFitState
+
+	- versione dell'applicazione che ha generato il documento
+	- numero del modello selezionato
+	- opzione di pesatura
+	- miscellanea
+	- ExpDataTable
+	- ParamsTable
+	- WeightsTable
+	- Std. Res. Table
+		[...] le altre tabelle
+	- testo dell' user model
+	- testo della finestra msgs
+
+-------------------------
+Versione 1.0a1
+
+	- versione dell'applicazione che ha generato il documento
+	- numero del modello selezionato
+	- opzione di pesatura
+	- miscellanea
+	- plot options miscellanea
+	-	[...] le tabelle
+  - WriteWindowShapeData(fExpDataTable.fTableWindow);
+  - WriteWindowShapeData(fParamsTable.fTableWindow);
+  - WriteWindowShapeData(fWeightsTable.fTableWindow);
+  - WriteWindowShapeData(fStdResTable.fTableWindow);
+  - WriteWindowShapeData(fDosesTable.fTableWindow);
+  - WriteWindowShapeData(fConstraintsTable.fTableWindow);
+	- WriteWindowShapeData(fMessagesWindow);
+	-	WriteWindowShapeData(fDataAndFuncPlotWindow);
+	-	WriteWindowShapeData(fStdResPlotWindow);
+	- testo dell' user model
+	- testo della finestra msgs

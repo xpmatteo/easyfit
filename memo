@@ -1,1 +1,231 @@
------------------------------------	Sommario-----------------------------------	• Baco con adj. for semilog	Mettere nella documentazione che il grafico del modello puo' essere impreciso	in presenza di irregolarita' nella curva.	Mettere nella sezione sull'alg. di fitting che l'algoritmo trova solo	dei minimi locali.	Il doc di Flavio produce dei risultati un po' diversi. Scoprire	come mai.		Il doc di FLavio mostra ancora una volta come sia possibile avere della	VRT negativa !!!		- decidere il testo dell'about box	- Quando viene un comando viene commesso, non sempre vengono annullate tutte le		celle che gli competono!!!!	- DoNeedDiskSpace sottostima lo spazio necessario per salvare, ma solo		subito dopo la prima volta che il doc e' stato fittato	- Quando si fa cancel da print all…, non blocca tutte le stampe!!!	- Non sono convinto che sia corretta la formula usata per		calcolare i momenti teorici quando il lagtime e' negativo:		una parte dell'area sotto la curva viene arbitrariamente buttata via.	- in 3 exp minus			- il computo del teor. AUC e' uguale per lag time				sia positivo che negativo.	----------------------------------Test da effettuare----------------------------------	- computeParams e linearSearch ora sono davvero intricate. Bisogna 		verificare che facciano il loro dovere. Per esempio quando la		soluzione non e' valida.	- Testare accuratamente che la revert faccia il suo dovere;	- Testare accuratamente che il salvataggio sia corretto.	- ctrl la correttezza dei vari valori farmacocinetici	- ctrl la correttezza dei plot	- prova ad importare un grosso file nel modello utente quando c'e' poca memoria	- testare se quando una save fallisce, si comporta bene	- Provare a incollare scrap di tipo non-text e non-TBL	- provare se, disegnando in buona risoluzione, le funzioni difficili		vengono disegnate bene		- provare a fare funzionare qualcosa con la partizione minima	- provare a lanciare la versione FPU su un mac senza FPU, e ciascuna delle		due versioni su un mac con system version 5	- correttezza della maniera con cui vengono fatti rispettare i constraints	----------------------------------Per la presentazione:----------------------------------	- resettare il font di default dell' SE/30 (Zappiamo tutta la PRam, cosi'		allegramente!)----------------------------------Per il manuale----------------------------------	- Puntualizzare che la finestra del grafico della funzione contiene "sempre" 		(cioe' solo dopo essere stata ridisegnata) il grafico del modello		correntemente selezionato	- puntualizzare anche che quella finestra non viene aggiornata automaticamente	----------------------------------To think about later:----------------------------------	- DoBreakFollowing viene chiamata un sacco di volte durante l'apertura: un numero		che cresce progressivamente col numero di tabelle gia' aperte. Cio' 		rallenta l'apertura del doc? fare una prova di performance.	- Fai una trace di ql che succede quando enteri un valore nella tabella, e cerca		di trovare qualche idea per ottimizzare. Magari prova ad usare le misure		di performance.			- Non funziona correttamente con i DA in MF quando in versione debug.		- aggiungere a ƒ-pascal la notazione-array per i parametri. Per sapere		quanti parametri ci sono nel modello, bisogna pero' presentare un		dialog prima di chidere per compilare. Brutto, ma non riesco a trovare		altre soluzioni. Probabilmente si puo' overridere CanDismiss, in modo		che l'utente abbia anche l'opzione di fare cancel e ritornare a 		quello che stava facendo. Inoltre il dialog deve essere draggabile, in modo		che l'utente possa guardare il testo che ha scritto prima di decidere.	- Come mai abbiamo cosi' spesso dei NAN(001) nell'output?	- cambiare i NAN(001) con '?' oppure addirittura non mettere niente? chiedere		a rok. Magari ci fidiamo del buon senso dell'utente e lasciamo cosi' com'e'.		Una serie di cose da tenere a mente per migliorare la interfaccia di EasyFit:	- Aggiungere un menuitem "help" per ciascu menu, in modo che l'utente		possa avere una pagina di help per ciascun menu			( o perlomeno per quelli piu' complicati )		Decidere se e' meglio avere una finestra non modale con testo che scorre,		o una pagina di testo modale per ciascun menu.	- Il meccanismo che salva la posizione delle finestre e' largamente incompleto. Dovrebbe ricordare se le finestre erano in stato Zoom o user.	- Lo zoom delle finestre dovrebbe portarle a una dimensione massimo piu'	consistente. 	- La finestra "user model" dovrebbe diventare una finestra non modale come le altre, e -forse- dovrebbe avere la sua entry nel menu windows.	- Fare uno studio sull'epsilon da usarsi nella derivazione col metodo delle diff		finite. Noi usiamo 1.0e-5, ma e' un numero scelto senza alcun criterio particola-		re.	- stampare anche il valore della norma del gradiente	- Quando fai finder printing, devi fare un print all...	- Quando c'e' un errore nel dialog dei plot options, deve selezionare la cella		responsabile	- mettere sempre almeno un soggetto ?	- forse dovrebbe aprire il dialog di define user model quando si sceglie		"User Defined" in "Choose Model…"	- Quando ci sono tante colonne nella fnstra expdata, lo scroll bar delle finestre		grafiche e' troppo veloce, va rallentato	- Quando fai undo dovresti portare di fronte la finestra in cui		l'undo ha effetto.	- Bug: non viene fatta la free della vista nel clipboard quando il clipboard		cambia	- Modificare la direzione in cui fa paste in 		'per righe' quando la scrap contiene una riga		'per colonne' in tutti gli altri casi. Per fare questo devi scrivere		una versione modificata di EachSelectedCellDo. Per semplificare		questa versione semplificata potrebbe entrare in azione solo quando			- fClipTable.fNoOfRows > 1			- AND SelectedCells^^.rgnSize = 10 { vuol dire che e' un rettangolo }			Aggiungere export in Define User Model	Nella finestra data = f bisogna mettere un controllo anche per il caso in cui	ymax = ymin. Anzi, sarebbe bene che in quel caso la adjust for semilog	producesse ymin > ymax		- CompressInUseBounds: 		la soluzione e' installare un co-handler che , quando gli viene		fornito un po' di tempo idle, e solo se la tabella non e' in		TEditing, chiama CompressInUseBounds, ed everntualmente corregge		il soggetto mostrato nelle finestre grzafiche, e il massimo dello scroll bar.	- Come mai quando copio i dati della finestra data nella finestra std res,		i valori sono diversi nelle ultimissime cifre???	- Pb: il meccanismo per calcolare le stime delle varianze funziona solo		se l'hessiano e' non singolare. Dovremmo forse fare un controllo, e 		usare la proc. di Marquardt se det(H)=0 ???				- ctrl se l’ultima area di AUC, MRT e VRT sperimentali viene calcolata 		correttamente (cioè usando il valore dell’ultima osservata).		In molti casi non viene calcolata correttamente. Bisogna ricontrollare		tutto quel codice.	- Perche' in modo debug numerical_integration da' errori pazzeschi??	- Fare in modo che nella tab. degli std res calcoli la funzione in tutti i punti X,		anche se manca la Y sperimentale.- dovresti modificare un flag ogni volta che si fa una modifica che richiederebbe	di ridisegnare le finestre grafiche. Poi dovresti controllare l'idle time, e se	siamo idle da piu' di, per esempio, un secondo, dovresti ridisegnare le finestre	grafiche. Forse il compito di contare l'idle time lo fa	gia' MacApp.Il comando fit modifica la selezione nelle tabelle (perche' forza l'inputnella ultima cella con ConfirmEntry). Si puo' evitare ?i doc salvati sono troppo grossi. Dovresti salvare solo il valore come extended,e ricostruire poi fFormula quando apri il doc.Il parser dovrebbe accettare anche = oltre a :=- BUG: se fallisce la nostra override di make view for alien clip, viene passato a macapp una view NIL, e lui s'arrabbia.- testare se vengono gestite correttamente le scrap non rettangolari- Con i pesi imputati a mano ci sono leggerissime differenze nelle ultime cifre.Perche'?--------------------------------------------------------------------------------------RAFFINATEZZE--------------------------------------------------------------------------------------- INstallare un co-handler che ridisegna le finestre grafiche se le finestre	dati relative sono cambiate.- Usare un formato diverso per ogni tabella; il format deve essere disponibile	solo quando la finestra attiva e' una tabella; abolire di conseguenza il 	fFormat a livello di TEasyFitDocument.- rifare il codice delle tabelle. deve	- essere più robusto (se il doc è in un file danneggiato, dà una bomba)	- essere più veloce.	 - usare gli stili di textedit per il testo dei messaggi- installa il comando Peel alla maniera del comando Fit- metti read-only la finestra dei pesi quando deve essere read-only.Installa un metodo SetWritePermission(setIt: BOOLEAN);	Si puo migliorare la velocita' delle tabelle ottimizzando il metodo	ValueToString che e' molto inefficiente.		Aggiornamenti automatici delle finestre grafiche.	---------------------------Dare un nome alle quantita' in gioco:Scrivere una Unit con un po' di var che definiscono quali sono le grandezze ingioco: che cosa rappresenta la X, che cosa la Y, in che unita' di misura sono rap-presentate.  Questa unita' deve potere tirar fuori un dialog in cui l'utentepuo' cambiare queste cose.  Deve anche fornire dei default.  Queste cosedovrebbero poi essere sfruttate nelle varire finestre grafiche o meno peretichettare gli assi ( o le colonne )----------------------------Per riordinare il codice----------------------------	- elimina il file UEasyFitDeclarations.p, copiandolo in UEasyFit.p e UTable.p	- elimina la setjmp-longjmp dal modulo Fit, e sostituisci con Failure.
+-----------------------------------
+	Sommario
+-----------------------------------
+
+	• Baco con adj. for semilog
+
+
+	Mettere nella documentazione che il grafico del modello puo' essere impreciso
+	in presenza di irregolarita' nella curva.
+
+	Mettere nella sezione sull'alg. di fitting che l'algoritmo trova solo
+	dei minimi locali.
+
+	Il doc di Flavio produce dei risultati un po' diversi. Scoprire
+	come mai.
+	
+	Il doc di FLavio mostra ancora una volta come sia possibile avere della
+	VRT negativa !!!
+	
+	- decidere il testo dell'about box
+
+	- Quando viene un comando viene commesso, non sempre vengono annullate tutte le
+		celle che gli competono!!!!
+
+	- DoNeedDiskSpace sottostima lo spazio necessario per salvare, ma solo
+		subito dopo la prima volta che il doc e' stato fittato
+
+	- Quando si fa cancel da print all…, non blocca tutte le stampe!!!
+
+	- Non sono convinto che sia corretta la formula usata per
+		calcolare i momenti teorici quando il lagtime e' negativo:
+		una parte dell'area sotto la curva viene arbitrariamente buttata via.
+	- in 3 exp minus
+			- il computo del teor. AUC e' uguale per lag time
+				sia positivo che negativo.
+	
+----------------------------------
+Test da effettuare
+----------------------------------
+	- computeParams e linearSearch ora sono davvero intricate. Bisogna 
+		verificare che facciano il loro dovere. Per esempio quando la
+		soluzione non e' valida.
+	- Testare accuratamente che la revert faccia il suo dovere;
+	- Testare accuratamente che il salvataggio sia corretto.
+	- ctrl la correttezza dei vari valori farmacocinetici
+	- ctrl la correttezza dei plot
+	- prova ad importare un grosso file nel modello utente quando c'e' poca memoria
+	- testare se quando una save fallisce, si comporta bene
+	- Provare a incollare scrap di tipo non-text e non-TBL
+	- provare se, disegnando in buona risoluzione, le funzioni difficili
+		vengono disegnate bene	
+	- provare a fare funzionare qualcosa con la partizione minima
+	- provare a lanciare la versione FPU su un mac senza FPU, e ciascuna delle
+		due versioni su un mac con system version 5
+	- correttezza della maniera con cui vengono fatti rispettare i constraints
+	
+----------------------------------
+Per la presentazione:
+----------------------------------
+	- resettare il font di default dell' SE/30 (Zappiamo tutta la PRam, cosi'
+		allegramente!)
+
+----------------------------------
+Per il manuale
+----------------------------------
+
+	- Puntualizzare che la finestra del grafico della funzione contiene "sempre" 
+		(cioe' solo dopo essere stata ridisegnata) il grafico del modello
+		correntemente selezionato
+	- puntualizzare anche che quella finestra non viene aggiornata automaticamente
+	
+----------------------------------
+To think about later:
+----------------------------------
+
+	- DoBreakFollowing viene chiamata un sacco di volte durante l'apertura: un numero
+		che cresce progressivamente col numero di tabelle gia' aperte. Cio' 
+		rallenta l'apertura del doc? fare una prova di performance.
+
+	- Fai una trace di ql che succede quando enteri un valore nella tabella, e cerca
+		di trovare qualche idea per ottimizzare. Magari prova ad usare le misure
+		di performance.
+		
+	- Non funziona correttamente con i DA in MF quando in versione debug.
+	
+	- aggiungere a ƒ-pascal la notazione-array per i parametri. Per sapere
+		quanti parametri ci sono nel modello, bisogna pero' presentare un
+		dialog prima di chidere per compilare. Brutto, ma non riesco a trovare
+		altre soluzioni. Probabilmente si puo' overridere CanDismiss, in modo
+		che l'utente abbia anche l'opzione di fare cancel e ritornare a 
+		quello che stava facendo. Inoltre il dialog deve essere draggabile, in modo
+		che l'utente possa guardare il testo che ha scritto prima di decidere.
+
+	- Come mai abbiamo cosi' spesso dei NAN(001) nell'output?
+	- cambiare i NAN(001) con '?' oppure addirittura non mettere niente? chiedere
+		a rok. Magari ci fidiamo del buon senso dell'utente e lasciamo cosi' com'e'.
+	
+	Una serie di cose da tenere a mente per migliorare la interfaccia di EasyFit:
+
+	- Aggiungere un menuitem "help" per ciascu menu, in modo che l'utente
+		possa avere una pagina di help per ciascun menu
+			( o perlomeno per quelli piu' complicati )
+		Decidere se e' meglio avere una finestra non modale con testo che scorre,
+		o una pagina di testo modale per ciascun menu.
+
+	- Il meccanismo che salva la posizione delle finestre e' largamente incompleto. Dovrebbe ricordare se le finestre erano in stato Zoom o user.
+	- Lo zoom delle finestre dovrebbe portarle a una dimensione massimo piu'
+	consistente. 
+	- La finestra "user model" dovrebbe diventare una finestra non modale come le altre, e -forse- dovrebbe avere la sua entry nel menu windows.
+
+	- Fare uno studio sull'epsilon da usarsi nella derivazione col metodo delle diff
+		finite. Noi usiamo 1.0e-5, ma e' un numero scelto senza alcun criterio particola-
+		re.
+	- stampare anche il valore della norma del gradiente
+	- Quando fai finder printing, devi fare un print all...
+	- Quando c'e' un errore nel dialog dei plot options, deve selezionare la cella
+		responsabile
+	- mettere sempre almeno un soggetto ?
+	- forse dovrebbe aprire il dialog di define user model quando si sceglie
+		"User Defined" in "Choose Model…"
+	- Quando ci sono tante colonne nella fnstra expdata, lo scroll bar delle finestre
+		grafiche e' troppo veloce, va rallentato
+	- Quando fai undo dovresti portare di fronte la finestra in cui
+		l'undo ha effetto.
+	- Bug: non viene fatta la free della vista nel clipboard quando il clipboard
+		cambia
+	- Modificare la direzione in cui fa paste in 
+		'per righe' quando la scrap contiene una riga
+		'per colonne' in tutti gli altri casi. Per fare questo devi scrivere
+		una versione modificata di EachSelectedCellDo. Per semplificare
+		questa versione semplificata potrebbe entrare in azione solo quando
+			- fClipTable.fNoOfRows > 1
+			- AND SelectedCells^^.rgnSize = 10 { vuol dire che e' un rettangolo }
+		
+	Aggiungere export in Define User Model
+
+	Nella finestra data = f bisogna mettere un controllo anche per il caso in cui
+	ymax = ymin. Anzi, sarebbe bene che in quel caso la adjust for semilog
+	producesse ymin > ymax
+	
+	- CompressInUseBounds: 
+		la soluzione e' installare un co-handler che , quando gli viene
+		fornito un po' di tempo idle, e solo se la tabella non e' in
+		TEditing, chiama CompressInUseBounds, ed everntualmente corregge
+		il soggetto mostrato nelle finestre grzafiche, e il massimo dello scroll bar.
+
+	- Come mai quando copio i dati della finestra data nella finestra std res,
+		i valori sono diversi nelle ultimissime cifre???
+
+	- Pb: il meccanismo per calcolare le stime delle varianze funziona solo
+		se l'hessiano e' non singolare. Dovremmo forse fare un controllo, e 
+		usare la proc. di Marquardt se det(H)=0 ???
+			
+	- ctrl se l’ultima area di AUC, MRT e VRT sperimentali viene calcolata 
+		correttamente (cioè usando il valore dell’ultima osservata).
+		In molti casi non viene calcolata correttamente. Bisogna ricontrollare
+		tutto quel codice.
+
+	- Perche' in modo debug numerical_integration da' errori pazzeschi??
+
+	- Fare in modo che nella tab. degli std res calcoli la funzione in tutti i punti X,
+		anche se manca la Y sperimentale.
+
+
+
+- dovresti modificare un flag ogni volta che si fa una modifica che richiederebbe
+	di ridisegnare le finestre grafiche. Poi dovresti controllare l'idle time, e se
+	siamo idle da piu' di, per esempio, un secondo, dovresti ridisegnare le finestre
+	grafiche. Forse il compito di contare l'idle time lo fa
+	gia' MacApp.
+
+
+Il comando fit modifica la selezione nelle tabelle (perche' forza l'input
+nella ultima cella con ConfirmEntry). Si puo' evitare ?
+
+i doc salvati sono troppo grossi. Dovresti salvare solo il valore come extended,
+e ricostruire poi fFormula quando apri il doc.
+
+Il parser dovrebbe accettare anche = oltre a :=
+
+- BUG: se fallisce la nostra override di make view for alien clip, viene 
+passato a macapp una view NIL, e lui s'arrabbia.
+
+- testare se vengono gestite correttamente le scrap non rettangolari
+
+- Con i pesi imputati a mano ci sono leggerissime differenze nelle ultime cifre.
+Perche'?
+
+--------------------------------------------------------------------------------------
+RAFFINATEZZE
+--------------------------------------------------------------------------------------
+
+- INstallare un co-handler che ridisegna le finestre grafiche se le finestre
+	dati relative sono cambiate.
+
+- Usare un formato diverso per ogni tabella; il format deve essere disponibile
+	solo quando la finestra attiva e' una tabella; abolire di conseguenza il 
+	fFormat a livello di TEasyFitDocument.
+
+- rifare il codice delle tabelle. deve
+	- essere più robusto (se il doc è in un file danneggiato, dà una bomba)
+	- essere più veloce.
+	
+ - usare gli stili di textedit per il testo dei messaggi
+
+- installa il comando Peel alla maniera del comando Fit
+
+- metti read-only la finestra dei pesi quando deve essere read-only.
+Installa un metodo SetWritePermission(setIt: BOOLEAN);
+
+	Si puo migliorare la velocita' delle tabelle ottimizzando il metodo
+	ValueToString che e' molto inefficiente.
+	
+	Aggiornamenti automatici delle finestre grafiche.
+	
+---------------------------
+Dare un nome alle quantita' in gioco:
+Scrivere una Unit con un po' di var che definiscono quali sono le grandezze in
+gioco: che cosa rappresenta la X, che cosa la Y, in che unita' di misura sono rap-
+presentate.  Questa unita' deve potere tirar fuori un dialog in cui l'utente
+puo' cambiare queste cose.  Deve anche fornire dei default.  Queste cose
+dovrebbero poi essere sfruttate nelle varire finestre grafiche o meno per
+etichettare gli assi ( o le colonne )
+
+
+----------------------------
+Per riordinare il codice
+----------------------------
+
+	- elimina il file UEasyFitDeclarations.p, copiandolo in UEasyFit.p e UTable.p
+	- elimina la setjmp-longjmp dal modulo Fit, e sostituisci con Failure.

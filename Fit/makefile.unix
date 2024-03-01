@@ -1,1 +1,42 @@
-# makefile per il modulo di fitting# per compilarlo a scopo di debug sulla SUNOBJ = absdeterminant.o 	\	computehess.o 	\	computeparams.o 	\	computesum.o 	\	fit.o 	\	fitglobals.o 	\	linearsearch.o 	\	marquardt.o 	\	model.o 	\	tabata.o 	\	scaling.o 	\	solvelinearsystem.o 	\	testforconvergence.o 	\	lu.o \	nrutil.o \	main.o \	matrutil.o \	updateparams.oCFLAGS = -g -DDEBUG fit : ${OBJ}	${CC} ${CFLAGS} ${OBJ} -lm -o fitlint : 	lint *.cout.diff : fit	fit > out.fit	diff -w out.fit out.fit.old | tee out.diffcommit :	mv out.fit out.fit.old# ------------ dipendenze ------------------${OBJ} : m_indep.h fit.h nrecipes.h
+
+# makefile per il modulo di fitting
+# per compilarlo a scopo di debug sulla SUN
+
+OBJ = absdeterminant.o 	\
+	computehess.o 	\
+	computeparams.o 	\
+	computesum.o 	\
+	fit.o 	\
+	fitglobals.o 	\
+	linearsearch.o 	\
+	marquardt.o 	\
+	model.o 	\
+	tabata.o 	\
+	scaling.o 	\
+	solvelinearsystem.o 	\
+	testforconvergence.o 	\
+	lu.o \
+	nrutil.o \
+	main.o \
+	matrutil.o \
+	updateparams.o
+
+CFLAGS = -g -DDEBUG 
+
+fit : ${OBJ}
+	${CC} ${CFLAGS} ${OBJ} -lm -o fit
+
+lint : 
+	lint *.c
+
+out.diff : fit
+	fit > out.fit
+	diff -w out.fit out.fit.old | tee out.diff
+
+commit :
+	mv out.fit out.fit.old
+
+# ------------ dipendenze ------------------
+
+${OBJ} : m_indep.h fit.h nrecipes.h
+

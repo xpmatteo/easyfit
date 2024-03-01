@@ -1,1 +1,257 @@
-#********************************************************************************#																				*#	File:			EasyFit.MAmake		 										*#																				*#	Description:	Makefile for EasyFit.										*#																				*#********************************************************************************#---------------------------------------------------------------------------------------------------#	Useful directories and variablesFit = {SrcApp}Fit:Resources = {SrcApp}Resources:Includes = {SrcApp}Includes:Compint = {SrcApp}compint:FitIncludes = {Includes}m_indep.h {Resources}Declarations.r ¶				{Includes}fit.h {Includes}MacApp.h {Includes}nrecipes.hCompintIncludes = {Includes}compint.h {Includes}MacApp.h#---------------------------------------------------------------------------------------------------#	List here the Application's NameAppName = EasyFit#-------------------------------------------------------------------------------------# Here we redefine the PascalSupport, since we want CRuntime instead of the pascal one.PascalSupport = ¶	"{CLibraries}CRunTime.o" ¶	"{PLibraries}PasLib.o" ¶	"{CLibraries}CInterface.o" ¶	"{CLibraries}StdCLib.o"#-------------------------------------------------------------------------------------# Here we redefine the SANE libraries, to include also the C ones.# When compiling with FPU support, make sure that CLib881.o comes *before*# the other C libraries .NonFPUSANELib = ¶	"{PLibraries}SANElib.o" ¶	"{CLibraries}CSANElib.o"FPUSANELib = ¶	"{PLibraries}SANELib881.o" ¶	"{CLibraries}CLib881.o" ¶	"{CLibraries}CSANELib881.o" ¶# And these are for MacApp 2.0 finalPascalNonFPUSANELib = {NonFPUSANELib}PascalFPUSANELib = {FPUSANELib}#---------------------------------------------------------------------------------------------------#	List any additional interfaces that your application is dependent onOtherInterfaces =  ¶	"{SrcApp}UEasyFitDeclarations.p" ¶	"{SrcApp}UTable.p" ¶	"{SrcApp}UEasyFitUtilities.p" ¶	"{SrcApp}UGrabberTracker.p"#---------------------------------------------------------------------------------------------------#	Name any other object files to link inOtherLinkFiles = ¶	"{ObjApp}UTable.p.o" ¶	"{ObjApp}UEasyFitUtilities.p.o" ¶	"{ObjApp}UEasyFitDeclarations.p.o" ¶	"{ObjApp}UGrabberTracker.p.o"	¶	"{ObjApp}EasyFitUtilities.c.o" ¶	"{ObjApp}URealText.p.o" ¶	"{ObjApp}UMultiTE.p.o" ¶	"{ObjApp}UPercDoneBarView.p.o" ¶	"{ObjApp}UWorkingDialog.p.o" ¶	"{ObjApp}ComputeStdRes.c.o" ¶	"{ObjApp}ComputeWeights.c.o" ¶	"{ObjApp}"peeling.c.o ¶	"{ObjApp}"computeHess.c.o ¶	"{ObjApp}"fit.c.o ¶	"{ObjApp}"constraints.c.o ¶	"{ObjApp}"matrUtil.c.o	¶	"{ObjApp}"testForConvergence.c.o 	¶	"{ObjApp}"model.c.o 		¶	"{ObjApp}"FitGlobals.c.o ¶	"{ObjApp}"ComputeSum.c.o ¶	"{ObjApp}"absDeterminant.c.o ¶	"{ObjApp}"computeParams.c.o  ¶	"{ObjApp}"linearSearch.c.o  	¶	"{ObjApp}"lu.c.o  	¶	"{ObjApp}"marquardt.c.o ¶	"{ObjApp}"tabata.c.o 		¶	"{ObjApp}"nrutil.c.o 		¶	"{ObjApp}"scaling.c.o 	¶	"{ObjApp}"solveLinearSystem.c.o ¶	"{ObjApp}"updateParams.c.o ¶	"{ObjApp}"Pharmacokin.c.o ¶	"{ObjApp}"Pharmacokin2.c.o ¶	"{ObjApp}"Pharmacokin3.c.o ¶	"{ObjApp}"Pharmacokin4.c.o ¶	"{ObjApp}"PharmacokinUtils.c.o ¶	"{ObjApp}"CodeSeg.c.o	¶	"{ObjApp}"compiler.c.o	¶	"{ObjApp}"compiler_error.c.o	¶	"{ObjApp}"compint_globals.c.o	¶	"{ObjApp}"interpreter.c.o	¶	"{ObjApp}"read_num.c.o	¶	"{ObjApp}"scanner.c.o	¶	"{ObjApp}"symbol_table.c.o	¶	"{ObjApp}"PlotFunction.c.o	¶	"{ObjApp}"XMDL.c.o	#---------------------------------------------------------------------------------------------------#	Express any additional dependencies for separate compilations.#	Include dependencies for the MacApp and Building block interfaces#	if you are dependent on them"{ObjApp}UEasyFitUtilities.p.o"	Ä ¶							"{SrcApp}UEasyFitDeclarations.p" ¶							"{SrcApp}UEasyFitUtilities.inc1.p" ¶							{MacAppIntf} ¶							{BuildingBlocksIntf}"{ObjApp}UGrabberTracker.p.o"	Ä ¶							"{SrcApp}UGrabberTracker.inc1.p" ¶							{MacAppIntf} ¶							{BuildingBlocksIntf}"{ObjApp}UTable.p.o"	Ä 	"{SrcApp}UTable.inc1.p" ¶							"{SrcApp}UEasyFitDeclarations.p" ¶							"{SrcApp}UGrabberTracker.p" ¶							{MacAppIntf} ¶							{BuildingBlocksIntf}"{ObjApp}UPercDoneBarView.p.o"	Ä 	"{SrcApp}UPercDoneBarView.inc1.p" ¶									{MacAppIntf} ¶									{BuildingBlocksIntf}"{ObjApp}UEasyFit.p.o"	Ä 	"{SrcApp}UEasyFit.inc1.p" ¶							"{SrcApp}UEasyFit.DoFit.p" ¶							"{SrcApp}UEasyFit.dlogs.p" ¶							"{SrcApp}UEasyFit.plots.p" ¶							"{SrcApp}UMultiTE.p" ¶							"{SrcApp}UWorkingDialog.p" ¶							{MacAppIntf} ¶							{BuildingBlocksIntf}"{ObjApp}URealText.p.o"	Ä 	"{SrcApp}URealText.inc1.p" ¶							{MacAppIntf} ¶							{BuildingBlocksIntf}"{ObjApp}UMultiTE.p.o"	Ä 	"{SrcApp}UMultiTE.inc1.p" ¶							"{SrcApp}UEasyFitDeclarations.p" ¶							{MacAppIntf} ¶							{BuildingBlocksIntf}"{ObjApp}UWorkingDialog.p.o"	Ä 	"{SrcApp}UWorkingDialog.inc1.p" ¶							"{SrcApp}UEasyFitDeclarations.p" ¶							{MacAppIntf} ¶							{BuildingBlocksIntf}"{ObjApp}"absdeterminant.c.o			Ä {FitIncludes}"{ObjApp}"computehess.c.o				Ä {FitIncludes}"{ObjApp}"computeparams.c.o				Ä {FitIncludes}"{ObjApp}"computesum.c.o				Ä {FitIncludes}"{ObjApp}"fit.c.o						Ä {FitIncludes} {Includes}EasyFitXMDL.h"{ObjApp}"constraints.c.o				Ä {FitIncludes}"{ObjApp}"fitglobals.c.o				Ä {FitIncludes}"{ObjApp}"linearsearch.c.o				Ä {FitIncludes}"{ObjApp}"lu.c.o						Ä {FitIncludes}"{ObjApp}"marquardt.c.o					Ä {FitIncludes}"{ObjApp}"matrUtil.c.o					Ä {FitIncludes}"{ObjApp}"model.c.o						Ä {FitIncludes}"{ObjApp}"nrutil.c.o					Ä {FitIncludes}"{ObjApp}"peeling.c.o					Ä {FitIncludes}"{ObjApp}"scaling.c.o					Ä {FitIncludes}"{ObjApp}"solvelinearsystem.c.o			Ä {FitIncludes}"{ObjApp}"tabata.c.o					Ä {FitIncludes}"{ObjApp}"testforconvergence.c.o		Ä {FitIncludes}"{ObjApp}"updateparams.c.o				Ä {FitIncludes}"{ObjApp}"Pharmacokin.c.o				Ä {FitIncludes}"{ObjApp}"Pharmacokin2.c.o				Ä {FitIncludes}"{ObjApp}"Pharmacokin3.c.o				Ä {FitIncludes}"{ObjApp}"Pharmacokin4.c.o				Ä {FitIncludes}"{ObjApp}"PharmacokinUtils.c.o			Ä {FitIncludes}"{ObjApp}"CodeSeg.c.o					Ä {CompintIncludes}"{ObjApp}"compiler.c.o					Ä {CompintIncludes}			"{ObjApp}"compiler_error.c.o			Ä {CompintIncludes} ¶											"{Resources}"Declarations.r"{ObjApp}"compint_globals.c.o			Ä {CompintIncludes}"{ObjApp}"interpreter.c.o				Ä {CompintIncludes} ¶											"{Resources}"Declarations.r ¶											"{Includes}m_indep.h""{ObjApp}"read_num.c.o					Ä {CompintIncludes}"{ObjApp}"scanner.c.o					Ä {CompintIncludes}"{ObjApp}"symbol_table.c.o				Ä {CompintIncludes}"{ObjApp}"XMDL.c.o						Ä {FitIncludes} {Includes}EasyFitXMDL.h"{ObjApp}EasyFit.r"						Ä "{Resources}Declarations.r""{ObjApp}Picts.r"						Ä "{Resources}Declarations.r""{ObjApp}MultiTE.r"						Ä "{Resources}Declarations.r""{ObjApp}Working.r"						Ä "{Resources}Declarations.r""{ObjApp}GrabberTracker.r"				Ä "{Resources}Declarations.r""{ObjApp}compint.r"						Ä "{Resources}Declarations.r""{ObjApp}DataAndFuncPlot.r"				Ä "{Resources}Declarations.r""{ObjApp}StdResPlot.r"					Ä "{Resources}Declarations.r""{ObjApp}DataAndFuncPlotOptions.r"		Ä "{Resources}Declarations.r""{ObjApp}AboutMarioNegri.r"				Ä "{Resources}Declarations.r""{ObjApp}AboutApp.r"					Ä "{Resources}Declarations.r""{ObjApp}SaveTextDlog.r"				Ä "{Resources}Declarations.r""{ObjApp}UserDefinedModelDlog.r"		Ä "{Resources}Declarations.r""{ObjApp}StdResPlotOptionsDlog.r"		Ä "{Resources}Declarations.r""{ObjApp}FitOptionsDlog.r"				Ä "{Resources}Declarations.r""{ObjApp}ExpDataWindow.r"				Ä "{Resources}Declarations.r""{ObjApp}ParamsWindow.r"				Ä "{Resources}Declarations.r""{ObjApp}DosesWindow.r"					Ä "{Resources}Declarations.r""{ObjApp}ConstraintsWindow.r"			Ä "{Resources}Declarations.r""{ObjApp}StdResWindow.r"				Ä "{Resources}Declarations.r""{ObjApp}WeightsWindow.r"				Ä "{Resources}Declarations.r""{ObjApp}MathChicago.r"					Ä "{Resources}Declarations.r""{ObjApp}AboutAppText.r"				Ä "{Resources}Declarations.r"#---------------------------------------------------------------------------------------------------#	Directory dependencies"{ObjApp}"				Ä	"{Resources}" "{Fit}" "{SrcApp}" "{compint}"			#---------------------------------------------------------------------------------------------------#	List resource files that the Rez file includes if you want to include#	more or less than the standard setOtherRsrcFiles = ¶	"{MAObj}Printing.rsrc" ¶	"{MAObj}Dialog.rsrc" ¶	"{ObjApp}Picts.rsrc" ¶	"{ObjApp}MultiTE.rsrc" ¶	"{ObjApp}Working.rsrc" ¶	"{ObjApp}GrabberTracker.rsrc" ¶	"{ObjApp}compint.rsrc" ¶	"{ObjApp}DataAndFuncPlot.rsrc" ¶	"{ObjApp}StdResPlot.rsrc" ¶	"{ObjApp}DataAndFuncPlotOptions.rsrc" ¶	"{ObjApp}AboutMarioNegri.rsrc" ¶	"{ObjApp}AboutApp.rsrc" ¶	"{ObjApp}SaveTextDlog.rsrc" ¶	"{ObjApp}UserDefinedModelDlog.rsrc" ¶	"{ObjApp}StdResPlotOptionsDlog.rsrc" ¶	"{ObjApp}FitOptionsDlog.rsrc" ¶	"{ObjApp}ExpDataWindow.rsrc" ¶	"{ObjApp}ParamsWindow.rsrc" ¶	"{ObjApp}DosesWindow.rsrc" ¶	"{ObjApp}ConstraintsWindow.rsrc" ¶	"{ObjApp}StdResWindow.rsrc" ¶	"{ObjApp}WeightsWindow.rsrc" ¶	"{ObjApp}MathChicago.rsrc" ¶	"{ObjApp}Monaco12.rsrc" ¶	"{ObjApp}AboutAppText.rsrc"	
+#********************************************************************************
+#																				*
+#	File:			EasyFit.MAmake		 										*
+#																				*
+#	Description:	Makefile for EasyFit.										*
+#																				*
+#********************************************************************************
+
+
+#---------------------------------------------------------------------------------------------------
+#	Useful directories and variables
+Fit = {SrcApp}Fit:
+Resources = {SrcApp}Resources:
+Includes = {SrcApp}Includes:
+Compint = {SrcApp}compint:
+FitIncludes = {Includes}m_indep.h {Resources}Declarations.r ¶
+				{Includes}fit.h {Includes}MacApp.h {Includes}nrecipes.h
+CompintIncludes = {Includes}compint.h {Includes}MacApp.h
+
+#---------------------------------------------------------------------------------------------------
+#	List here the Application's Name
+AppName = EasyFit
+
+
+#-------------------------------------------------------------------------------------
+# Here we redefine the PascalSupport, since we want CRuntime instead of the pascal one.
+PascalSupport = ¶
+	"{CLibraries}CRunTime.o" ¶
+	"{PLibraries}PasLib.o" ¶
+	"{CLibraries}CInterface.o" ¶
+	"{CLibraries}StdCLib.o"
+
+
+#-------------------------------------------------------------------------------------
+# Here we redefine the SANE libraries, to include also the C ones.
+# When compiling with FPU support, make sure that CLib881.o comes *before*
+# the other C libraries .
+
+NonFPUSANELib = ¶
+	"{PLibraries}SANElib.o" ¶
+	"{CLibraries}CSANElib.o"
+
+FPUSANELib = ¶
+	"{PLibraries}SANELib881.o" ¶
+	"{CLibraries}CLib881.o" ¶
+	"{CLibraries}CSANELib881.o" ¶
+
+# And these are for MacApp 2.0 final
+PascalNonFPUSANELib = {NonFPUSANELib}
+PascalFPUSANELib = {FPUSANELib}
+
+#---------------------------------------------------------------------------------------------------
+#	List any additional interfaces that your application is dependent on
+OtherInterfaces =  ¶
+	"{SrcApp}UEasyFitDeclarations.p" ¶
+	"{SrcApp}UTable.p" ¶
+	"{SrcApp}UEasyFitUtilities.p" ¶
+	"{SrcApp}UGrabberTracker.p"
+
+
+#---------------------------------------------------------------------------------------------------
+#	Name any other object files to link in
+OtherLinkFiles = ¶
+	"{ObjApp}UTable.p.o" ¶
+	"{ObjApp}UEasyFitUtilities.p.o" ¶
+	"{ObjApp}UEasyFitDeclarations.p.o" ¶
+	"{ObjApp}UGrabberTracker.p.o"	¶
+	"{ObjApp}EasyFitUtilities.c.o" ¶
+	"{ObjApp}URealText.p.o" ¶
+	"{ObjApp}UMultiTE.p.o" ¶
+	"{ObjApp}UPercDoneBarView.p.o" ¶
+	"{ObjApp}UWorkingDialog.p.o" ¶
+	"{ObjApp}ComputeStdRes.c.o" ¶
+	"{ObjApp}ComputeWeights.c.o" ¶
+	"{ObjApp}"peeling.c.o ¶
+	"{ObjApp}"computeHess.c.o ¶
+	"{ObjApp}"fit.c.o ¶
+	"{ObjApp}"constraints.c.o ¶
+	"{ObjApp}"matrUtil.c.o	¶
+	"{ObjApp}"testForConvergence.c.o 	¶
+	"{ObjApp}"model.c.o 		¶
+	"{ObjApp}"FitGlobals.c.o ¶
+	"{ObjApp}"ComputeSum.c.o ¶
+	"{ObjApp}"absDeterminant.c.o ¶
+	"{ObjApp}"computeParams.c.o  ¶
+	"{ObjApp}"linearSearch.c.o  	¶
+	"{ObjApp}"lu.c.o  	¶
+	"{ObjApp}"marquardt.c.o ¶
+	"{ObjApp}"tabata.c.o 		¶
+	"{ObjApp}"nrutil.c.o 		¶
+	"{ObjApp}"scaling.c.o 	¶
+	"{ObjApp}"solveLinearSystem.c.o ¶
+	"{ObjApp}"updateParams.c.o ¶
+	"{ObjApp}"Pharmacokin.c.o ¶
+	"{ObjApp}"Pharmacokin2.c.o ¶
+	"{ObjApp}"Pharmacokin3.c.o ¶
+	"{ObjApp}"Pharmacokin4.c.o ¶
+	"{ObjApp}"PharmacokinUtils.c.o ¶
+	"{ObjApp}"CodeSeg.c.o	¶
+	"{ObjApp}"compiler.c.o	¶
+	"{ObjApp}"compiler_error.c.o	¶
+	"{ObjApp}"compint_globals.c.o	¶
+	"{ObjApp}"interpreter.c.o	¶
+	"{ObjApp}"read_num.c.o	¶
+	"{ObjApp}"scanner.c.o	¶
+	"{ObjApp}"symbol_table.c.o	¶
+	"{ObjApp}"PlotFunction.c.o	¶
+	"{ObjApp}"XMDL.c.o
+	
+
+#---------------------------------------------------------------------------------------------------
+#	Express any additional dependencies for separate compilations.
+#	Include dependencies for the MacApp and Building block interfaces
+#	if you are dependent on them
+"{ObjApp}UEasyFitUtilities.p.o"	Ä ¶
+							"{SrcApp}UEasyFitDeclarations.p" ¶
+							"{SrcApp}UEasyFitUtilities.inc1.p" ¶
+							{MacAppIntf} ¶
+							{BuildingBlocksIntf}
+
+"{ObjApp}UGrabberTracker.p.o"	Ä ¶
+							"{SrcApp}UGrabberTracker.inc1.p" ¶
+							{MacAppIntf} ¶
+							{BuildingBlocksIntf}
+
+"{ObjApp}UTable.p.o"	Ä 	"{SrcApp}UTable.inc1.p" ¶
+							"{SrcApp}UEasyFitDeclarations.p" ¶
+							"{SrcApp}UGrabberTracker.p" ¶
+							{MacAppIntf} ¶
+							{BuildingBlocksIntf}
+
+"{ObjApp}UPercDoneBarView.p.o"	Ä 	"{SrcApp}UPercDoneBarView.inc1.p" ¶
+									{MacAppIntf} ¶
+									{BuildingBlocksIntf}
+
+"{ObjApp}UEasyFit.p.o"	Ä 	"{SrcApp}UEasyFit.inc1.p" ¶
+							"{SrcApp}UEasyFit.DoFit.p" ¶
+							"{SrcApp}UEasyFit.dlogs.p" ¶
+							"{SrcApp}UEasyFit.plots.p" ¶
+							"{SrcApp}UMultiTE.p" ¶
+							"{SrcApp}UWorkingDialog.p" ¶
+							{MacAppIntf} ¶
+							{BuildingBlocksIntf}
+
+"{ObjApp}URealText.p.o"	Ä 	"{SrcApp}URealText.inc1.p" ¶
+							{MacAppIntf} ¶
+							{BuildingBlocksIntf}
+
+"{ObjApp}UMultiTE.p.o"	Ä 	"{SrcApp}UMultiTE.inc1.p" ¶
+							"{SrcApp}UEasyFitDeclarations.p" ¶
+							{MacAppIntf} ¶
+							{BuildingBlocksIntf}
+
+"{ObjApp}UWorkingDialog.p.o"	Ä 	"{SrcApp}UWorkingDialog.inc1.p" ¶
+							"{SrcApp}UEasyFitDeclarations.p" ¶
+							{MacAppIntf} ¶
+							{BuildingBlocksIntf}
+
+"{ObjApp}"absdeterminant.c.o			Ä {FitIncludes}
+"{ObjApp}"computehess.c.o				Ä {FitIncludes}
+"{ObjApp}"computeparams.c.o				Ä {FitIncludes}
+"{ObjApp}"computesum.c.o				Ä {FitIncludes}
+"{ObjApp}"fit.c.o						Ä {FitIncludes} {Includes}EasyFitXMDL.h
+"{ObjApp}"constraints.c.o				Ä {FitIncludes}
+"{ObjApp}"fitglobals.c.o				Ä {FitIncludes}
+"{ObjApp}"linearsearch.c.o				Ä {FitIncludes}
+"{ObjApp}"lu.c.o						Ä {FitIncludes}
+"{ObjApp}"marquardt.c.o					Ä {FitIncludes}
+"{ObjApp}"matrUtil.c.o					Ä {FitIncludes}
+"{ObjApp}"model.c.o						Ä {FitIncludes}
+"{ObjApp}"nrutil.c.o					Ä {FitIncludes}
+"{ObjApp}"peeling.c.o					Ä {FitIncludes}
+"{ObjApp}"scaling.c.o					Ä {FitIncludes}
+"{ObjApp}"solvelinearsystem.c.o			Ä {FitIncludes}
+"{ObjApp}"tabata.c.o					Ä {FitIncludes}
+"{ObjApp}"testforconvergence.c.o		Ä {FitIncludes}
+"{ObjApp}"updateparams.c.o				Ä {FitIncludes}
+"{ObjApp}"Pharmacokin.c.o				Ä {FitIncludes}
+"{ObjApp}"Pharmacokin2.c.o				Ä {FitIncludes}
+"{ObjApp}"Pharmacokin3.c.o				Ä {FitIncludes}
+"{ObjApp}"Pharmacokin4.c.o				Ä {FitIncludes}
+"{ObjApp}"PharmacokinUtils.c.o			Ä {FitIncludes}
+
+"{ObjApp}"CodeSeg.c.o					Ä {CompintIncludes}
+"{ObjApp}"compiler.c.o					Ä {CompintIncludes}			
+"{ObjApp}"compiler_error.c.o			Ä {CompintIncludes} ¶
+											"{Resources}"Declarations.r
+"{ObjApp}"compint_globals.c.o			Ä {CompintIncludes}
+"{ObjApp}"interpreter.c.o				Ä {CompintIncludes} ¶
+											"{Resources}"Declarations.r ¶
+											"{Includes}m_indep.h"
+"{ObjApp}"read_num.c.o					Ä {CompintIncludes}
+"{ObjApp}"scanner.c.o					Ä {CompintIncludes}
+"{ObjApp}"symbol_table.c.o				Ä {CompintIncludes}
+"{ObjApp}"XMDL.c.o						Ä {FitIncludes} {Includes}EasyFitXMDL.h
+
+"{ObjApp}EasyFit.r"						Ä "{Resources}Declarations.r"
+"{ObjApp}Picts.r"						Ä "{Resources}Declarations.r"
+"{ObjApp}MultiTE.r"						Ä "{Resources}Declarations.r"
+"{ObjApp}Working.r"						Ä "{Resources}Declarations.r"
+"{ObjApp}GrabberTracker.r"				Ä "{Resources}Declarations.r"
+"{ObjApp}compint.r"						Ä "{Resources}Declarations.r"
+"{ObjApp}DataAndFuncPlot.r"				Ä "{Resources}Declarations.r"
+"{ObjApp}StdResPlot.r"					Ä "{Resources}Declarations.r"
+"{ObjApp}DataAndFuncPlotOptions.r"		Ä "{Resources}Declarations.r"
+"{ObjApp}AboutMarioNegri.r"				Ä "{Resources}Declarations.r"
+"{ObjApp}AboutApp.r"					Ä "{Resources}Declarations.r"
+"{ObjApp}SaveTextDlog.r"				Ä "{Resources}Declarations.r"
+"{ObjApp}UserDefinedModelDlog.r"		Ä "{Resources}Declarations.r"
+"{ObjApp}StdResPlotOptionsDlog.r"		Ä "{Resources}Declarations.r"
+"{ObjApp}FitOptionsDlog.r"				Ä "{Resources}Declarations.r"
+"{ObjApp}ExpDataWindow.r"				Ä "{Resources}Declarations.r"
+"{ObjApp}ParamsWindow.r"				Ä "{Resources}Declarations.r"
+"{ObjApp}DosesWindow.r"					Ä "{Resources}Declarations.r"
+"{ObjApp}ConstraintsWindow.r"			Ä "{Resources}Declarations.r"
+"{ObjApp}StdResWindow.r"				Ä "{Resources}Declarations.r"
+"{ObjApp}WeightsWindow.r"				Ä "{Resources}Declarations.r"
+"{ObjApp}MathChicago.r"					Ä "{Resources}Declarations.r"
+"{ObjApp}AboutAppText.r"				Ä "{Resources}Declarations.r"
+
+
+#---------------------------------------------------------------------------------------------------
+#	Directory dependencies
+"{ObjApp}"				Ä	"{Resources}" "{Fit}" "{SrcApp}" "{compint}"
+			
+
+#---------------------------------------------------------------------------------------------------
+#	List resource files that the Rez file includes if you want to include
+#	more or less than the standard set
+OtherRsrcFiles = ¶
+	"{MAObj}Printing.rsrc" ¶
+	"{MAObj}Dialog.rsrc" ¶
+	"{ObjApp}Picts.rsrc" ¶
+	"{ObjApp}MultiTE.rsrc" ¶
+	"{ObjApp}Working.rsrc" ¶
+	"{ObjApp}GrabberTracker.rsrc" ¶
+	"{ObjApp}compint.rsrc" ¶
+	"{ObjApp}DataAndFuncPlot.rsrc" ¶
+	"{ObjApp}StdResPlot.rsrc" ¶
+	"{ObjApp}DataAndFuncPlotOptions.rsrc" ¶
+	"{ObjApp}AboutMarioNegri.rsrc" ¶
+	"{ObjApp}AboutApp.rsrc" ¶
+	"{ObjApp}SaveTextDlog.rsrc" ¶
+	"{ObjApp}UserDefinedModelDlog.rsrc" ¶
+	"{ObjApp}StdResPlotOptionsDlog.rsrc" ¶
+	"{ObjApp}FitOptionsDlog.rsrc" ¶
+	"{ObjApp}ExpDataWindow.rsrc" ¶
+	"{ObjApp}ParamsWindow.rsrc" ¶
+	"{ObjApp}DosesWindow.rsrc" ¶
+	"{ObjApp}ConstraintsWindow.rsrc" ¶
+	"{ObjApp}StdResWindow.rsrc" ¶
+	"{ObjApp}WeightsWindow.rsrc" ¶
+	"{ObjApp}MathChicago.rsrc" ¶
+	"{ObjApp}Monaco12.rsrc" ¶
+	"{ObjApp}AboutAppText.rsrc"
+
+	

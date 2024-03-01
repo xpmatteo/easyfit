@@ -1,1 +1,246 @@
-Note per chi debba lavorare su EasyFit--------------------------------------Cose da studiare:	- Inside Macintosh vol. I tutto	- Inside Macintosh vol. II il capitolo sul Memory Manager	- Inside Macintosh vol. III il capitolo sulla interfaccia col Finder	- Inside Macintosh vol. IV e V una scorsa di tutto quanto	- “How To Write Macintosh Software”, di Scott Knaster, Hayden Books	- MacApp tutorial	- MacApp recipes	- MacApp release notes	- Il manuale della MPW shell	- Il manuale dei compilatori C e Pascal	- Il manuale di Macsbug	- La “Programmer's guide to Multifinder”-------------------------------------EasyFit deve essere compilata insieme a MacApp versione 2.0, NON ALTRE,e con i compilatori e il linker MPW versione 3.0 o successive.-------------------------------------Il codice di MacApp deve essere modificato con alcuni dei suggerimentidella Technical Note #280, uscita nell'agosto 90 e rivista nell'ottobre 90.	• Fix:	In TCtlMgr.Draw (file UMacApp.TControls.p), replace:			  WITH fCMgrControl^^ DO				  BEGIN				  savedOwner := contrlOwner;				  contrlOwner := WindowPtr(thePort);				  PenNormal;				{NECESSARY?}				  IF qNeedsROM128K | gConfiguration.hasROM128K THEN					  Draw1Control(fCMgrControl)				  ELSE					  BEGIN					  SetCMgrVisibility(FALSE);			{ Force ShowControl to redraw }					  ShowControl(fCMgrControl);					  END;				  contrlOwner := savedOwner;				  END;	With:			  WITH fCMgrControl^^ DO				  BEGIN				  savedOwner := contrlOwner;				  contrlOwner := WindowPtr(thePort);				  END;				  { MEB moved up from below }			  PenNormal;				{NECESSARY?}			  IF qNeedsROM128K | gConfiguration.hasROM128K THEN				  Draw1Control(fCMgrControl)			  ELSE				  BEGIN				  SetCMgrVisibility(FALSE);				{ Force ShowControl to redraw }				  ShowControl(fCMgrControl);				  END;			  fCMgrControl^^.contrlOwner := savedOwner;   { MEB used to be in WITH }	• Fix:	Change the failure handling	procedure in TRevertDocCommand.DoIt	(file UMacApp.TDocument.p) to:	   PROCEDURE HdlRevertCmd(error: OSErr;	message: LONGINT);		   BEGIN		   {Check whether the document has already been	clobbered }		   IF fChangedDocument.GetChangeCount =	0 THEN			   fChangedDocument.Close  {remove the debris left by fChangedDocument}		   END;	In TDocument.Revert, move the line		SetChangeCount(0);	before the line		FreeData;		• Fix:	In TTEView.CalcRealHeight (file UTEView.TTEView.p), replace:			  theHeight := TEGetHeight(0, MAXINT, fHTE);	With:			  theHeight := TEGetHeight(MAXINT, 0, fHTE);• Fix:	Reverse the test in TDeskScrapView.CheckScrapContents (file UMacApp.TDeskScrapView.p) so that it looks for “PICT” first and then “TEXT”:			  fHavePicture := LookForScrapType('PICT');			  fHaveText := LookForScrapType('TEXT');• Fix:	Modify TTEView.StuffTERects	(file UTEView.TTEView.p) to	give the TERecord a bottomless destRect and viewRect.	Replace:	   right :=	MAX(right, left	+ aFontInfo.widMax);	With:	   BEGIN	   right :=	MAX(right, left	+ aFontInfo.widMax);	   bottom := MAXINT;			  {	give us	a bottomless destrect }	   END;• Fix:	In TTEView.DoSetupMenus	(file UTEView.TTEView.p), replace the line:		Enable(cSelectAll, (fHTE^^.teLength	> 0));	With:		Enable(cSelectAll, IsViewEnabled & (fHTE^^.teLength	> 0));• Fix:	Replace the following lines in TTEPasteCommand.ITEPasteCommand (file UTEView.TTEPasteCommand.p):			  IF newStyleLen > 0 THEN				  BEGIN				  fNewStyles := newStyles;				  { Difference between old and new styles }				  fStylePad := newStyleLen - fStylePad;				  END;	With:			  IF newStyleLen > 0 THEN				  BEGIN				  fNewStyles := newStyles;				  { Difference between old and new styles }				  fStylePad := newStyleLen - fStylePad;				  END			  ELSE				  Handle(newStyles) := DisposeIfHandle(newStyles);• Fix:	Modify the interface to GetPortTextStyle in the files UMacAppUtilities.p and UMacAppUtilities.inc1.p.• DoRealInitToolBox should call _FlushEvents(everyEvent-diskMask-app4Mask) rather than _FlushEvents(everyEvent-diskMask-app4Evt).Fix:	Change app4Evt to app4Mask in the _FlushEvents call  (file UMacAppUtilities.inc1.p).-------------------------------------Il comando per compilare EasyFit e' il seguente:		MABuild EasyFit -ExpandEnvVars ∂										-linkmap ∂										-link -d ∂										-C ∂"-i {NewFit}Includes∂" ∂										-C ∂"-i {NewFit}Resources∂" ∂										-Rez ∂"-i {NewFit}Resources∂"										Deve essere dato quando la directory corrente e' quella dei sorgentidi EasyFit. Conviene definire un'alias breve per questo comando. Si puo' definirlo adesempio cosi':		a m MABuild EasyFit -ExpandEnvVars ∂												-linkmap ∂												-link -d ∂												-TT ∂												-C ∂"-i {NewFit}Includes∂" ∂												-C ∂"-i {NewFit}Resources∂" ∂												-Rez ∂"-i {NewFit}Resources∂"								Il comando MABuild di MacApp versione 2.0ß9 e' difettoso. Infatti non generacorrettamente gli argomenti per il compilatore C. Ho corretto il codicepascal del comando MABuild, e nella directory dei sorgenti di EasyFit sitrova la versione corretta. Per compilare MABuild.p, occorre dare il comando		MAbuild -nodebug MABuild	Quindi bisogna sostituire il tool di shell MABuild originale con quello appenacompilato.EasyFit non usa il file MacApp.r, come fanno per default tutte le applicazioniMacApp. Invece ne usa una versione modificata che si trova nella directory deifile .r . La nostra versione di MacApp.r si chiama MacAppModif.r .==========================Variabili di compilazione:Definendo il simbolo TOOL nel codice dell'algoritmo di fitting, si compila per un tool di MPW. Questa opzione non e' piu' statausata da tempo, e non so se funziona ancora bene.Definendo il simbolo SPEEDUP, si ottiene un netto miglioramento delleprestazioni del fitting. Il simbolo viene definito nel file Declarations.r .Il simbolo DEBUG e' una vecchia versione di qDebug. Appare ancora in alcunifile, dove viene esplicitamente definito come zero. Definendolo pari a uno,vengono stampate estese informazioni per debug.Il simbolo qConstraints compila tutta la applicazione in una versione che permetteall'utente di porre degli intervalli di validita' sui parametri.il simbolo qFuncDefs serve a compilare il codice di compint con un estensioneper permettere di definire funzioni (cioe' subroutines con parametri che restituis=cono un valore.)IL simbolo qELS serve a abilitare l'opzione ELSFit, che in questo momento non funziona.==========================Codice di calcolo:prima di toccare il codice di calcolo è necessario leggere anche, perlomeno,dalle “Numerical Recipes in C”, di Press ed al.			- le parti introduttive			- il capitolo sulla minimizzazione non lineare			- il capitolo sulla stima di parametri.Le routines di	- allocazione e deallocazione di matrici e vettori	- soluzione del sistema linearesono dovute alle "numerical recipes"Nel codice del modulo "Fit", si usa una convenzione inconsistenteper rappresentare vettori e matrici: i vettori sono rappresentatimediante array indiciati a partire da zero: vett[0..n-1]; le matrici, invece, sonorappresentate con un array di puntatori ad array indiciati a partire da 1:	matr[1..n][1..n].Questa e' la regola generale. Ci sono eccezioni. Esaminate la maniera in cui unvettore viene allocato per sapere come viene indiciato.==========================Per aggiungere modelli predefiniti: non e' una operazione semplice.Queste sono le cose che bisogna fare, non necessariamente nell'ordine.	- Modificare la risorsa "view" del dialog Choose Model per aggiungere i 		radio buttons opportuni.	- Creare le costanti opportune in UEasyFitDeclarations.p e fit.h	- Modificare la procedura PrintSmallHeaderInfo in UEasyFit.DoFit.p
+
+Note per chi debba lavorare su EasyFit
+--------------------------------------
+
+Cose da studiare:
+	- Inside Macintosh vol. I tutto
+	- Inside Macintosh vol. II il capitolo sul Memory Manager
+	- Inside Macintosh vol. III il capitolo sulla interfaccia col Finder
+	- Inside Macintosh vol. IV e V una scorsa di tutto quanto
+	- “How To Write Macintosh Software”, di Scott Knaster, Hayden Books
+	- MacApp tutorial
+	- MacApp recipes
+	- MacApp release notes
+	- Il manuale della MPW shell
+	- Il manuale dei compilatori C e Pascal
+	- Il manuale di Macsbug
+	- La “Programmer's guide to Multifinder”
+
+
+-------------------------------------
+
+EasyFit deve essere compilata insieme a MacApp versione 2.0, NON ALTRE,
+e con i compilatori e il linker MPW versione 3.0 o successive.
+
+-------------------------------------
+Il codice di MacApp deve essere modificato con alcuni dei suggerimenti
+della Technical Note #280, uscita nell'agosto 90 e rivista nell'ottobre 90.
+
+	• Fix:	In TCtlMgr.Draw (file UMacApp.TControls.p), replace:
+
+			  WITH fCMgrControl^^ DO
+				  BEGIN
+				  savedOwner := contrlOwner;
+				  contrlOwner := WindowPtr(thePort);
+
+				  PenNormal;				{NECESSARY?}
+
+				  IF qNeedsROM128K | gConfiguration.hasROM128K THEN
+					  Draw1Control(fCMgrControl)
+				  ELSE
+					  BEGIN
+					  SetCMgrVisibility(FALSE);			{ Force ShowControl to redraw }
+					  ShowControl(fCMgrControl);
+					  END;
+
+				  contrlOwner := savedOwner;
+				  END;
+
+	With:
+
+			  WITH fCMgrControl^^ DO
+				  BEGIN
+				  savedOwner := contrlOwner;
+				  contrlOwner := WindowPtr(thePort);
+				  END;				  { MEB moved up from below }
+			  PenNormal;				{NECESSARY?}
+
+			  IF qNeedsROM128K | gConfiguration.hasROM128K THEN
+				  Draw1Control(fCMgrControl)
+			  ELSE
+				  BEGIN
+				  SetCMgrVisibility(FALSE);				{ Force ShowControl to redraw }
+				  ShowControl(fCMgrControl);
+				  END;
+
+			  fCMgrControl^^.contrlOwner := savedOwner;   { MEB used to be in WITH }
+
+	• Fix:	Change the failure handling	procedure in TRevertDocCommand.DoIt	(file 
+UMacApp.TDocument.p) to:
+
+	   PROCEDURE HdlRevertCmd(error: OSErr;	message: LONGINT);
+		   BEGIN
+		   {Check whether the document has already been	clobbered }
+		   IF fChangedDocument.GetChangeCount =	0 THEN
+			   fChangedDocument.Close  {remove the debris left by fChangedDocument}
+		   END;
+
+	In TDocument.Revert, move the line
+
+		SetChangeCount(0);
+
+	before the line
+
+		FreeData;
+		
+• Fix:	In TTEView.CalcRealHeight (file UTEView.TTEView.p), replace:
+
+			  theHeight := TEGetHeight(0, MAXINT, fHTE);
+
+	With:
+
+			  theHeight := TEGetHeight(MAXINT, 0, fHTE);
+
+
+• Fix:	Reverse the test in TDeskScrapView.CheckScrapContents (file 
+UMacApp.TDeskScrapView.p) so that it looks for “PICT” first and then “TEXT”:
+
+			  fHavePicture := LookForScrapType('PICT');
+			  fHaveText := LookForScrapType('TEXT');
+
+• Fix:	Modify TTEView.StuffTERects	(file UTEView.TTEView.p) to	give the TERecord 
+a bottomless destRect and viewRect.	Replace:
+
+	   right :=	MAX(right, left	+ aFontInfo.widMax);
+
+	With:
+
+	   BEGIN
+	   right :=	MAX(right, left	+ aFontInfo.widMax);
+	   bottom := MAXINT;			  {	give us	a bottomless destrect }
+	   END;
+
+• Fix:	In TTEView.DoSetupMenus	(file UTEView.TTEView.p), replace the line:
+
+		Enable(cSelectAll, (fHTE^^.teLength	> 0));
+
+	With:
+
+		Enable(cSelectAll, IsViewEnabled & (fHTE^^.teLength	> 0));
+
+• Fix:	Replace the following lines in TTEPasteCommand.ITEPasteCommand (file 
+UTEView.TTEPasteCommand.p):
+
+			  IF newStyleLen > 0 THEN
+				  BEGIN
+				  fNewStyles := newStyles;
+				  { Difference between old and new styles }
+				  fStylePad := newStyleLen - fStylePad;
+				  END;
+
+	With:
+
+			  IF newStyleLen > 0 THEN
+				  BEGIN
+				  fNewStyles := newStyles;
+				  { Difference between old and new styles }
+				  fStylePad := newStyleLen - fStylePad;
+				  END
+			  ELSE
+				  Handle(newStyles) := DisposeIfHandle(newStyles);
+
+• Fix:	Modify the interface to GetPortTextStyle in the files UMacAppUtilities.p 
+and UMacAppUtilities.inc1.p.
+
+• DoRealInitToolBox should call _FlushEvents(everyEvent-diskMask-app4Mask) 
+rather than _FlushEvents(everyEvent-diskMask-app4Evt).
+Fix:	Change app4Evt to app4Mask in the _FlushEvents call  (file 
+UMacAppUtilities.inc1.p).
+
+
+-------------------------------------
+Il comando per compilare EasyFit e' il seguente:
+
+		MABuild EasyFit -ExpandEnvVars ∂
+										-linkmap ∂
+										-link -d ∂
+										-C ∂"-i {NewFit}Includes∂" ∂
+										-C ∂"-i {NewFit}Resources∂" ∂
+										-Rez ∂"-i {NewFit}Resources∂"
+										
+Deve essere dato quando la directory corrente e' quella dei sorgenti
+di EasyFit. 
+
+Conviene definire un'alias breve per questo comando. Si puo' definirlo ad
+esempio cosi':
+
+		a m MABuild EasyFit -ExpandEnvVars ∂
+												-linkmap ∂
+												-link -d ∂
+												-TT ∂
+												-C ∂"-i {NewFit}Includes∂" ∂
+												-C ∂"-i {NewFit}Resources∂" ∂
+												-Rez ∂"-i {NewFit}Resources∂"
+							
+	
+Il comando MABuild di MacApp versione 2.0ß9 e' difettoso. Infatti non genera
+correttamente gli argomenti per il compilatore C. Ho corretto il codice
+pascal del comando MABuild, e nella directory dei sorgenti di EasyFit si
+trova la versione corretta. Per compilare MABuild.p, occorre dare il comando
+	
+	MAbuild -nodebug MABuild
+	
+Quindi bisogna sostituire il tool di shell MABuild originale con quello appena
+compilato.
+
+EasyFit non usa il file MacApp.r, come fanno per default tutte le applicazioni
+MacApp. Invece ne usa una versione modificata che si trova nella directory dei
+file .r . La nostra versione di MacApp.r si chiama MacAppModif.r .
+
+==========================
+Variabili di compilazione:
+
+Definendo il simbolo TOOL nel codice dell'algoritmo di fitting, 
+si compila per un tool di MPW. Questa opzione non e' piu' stata
+usata da tempo, e non so se funziona ancora bene.
+
+Definendo il simbolo SPEEDUP, si ottiene un netto miglioramento delle
+prestazioni del fitting. Il simbolo viene definito nel file Declarations.r .
+
+Il simbolo DEBUG e' una vecchia versione di qDebug. Appare ancora in alcuni
+file, dove viene esplicitamente definito come zero. Definendolo pari a uno,
+vengono stampate estese informazioni per debug.
+
+Il simbolo qConstraints compila tutta la applicazione in una versione che permette
+all'utente di porre degli intervalli di validita' sui parametri.
+
+il simbolo qFuncDefs serve a compilare il codice di compint con un estensione
+per permettere di definire funzioni (cioe' subroutines con parametri che restituis=
+cono un valore.)
+
+IL simbolo qELS serve a abilitare l'opzione ELSFit, che in questo momento non 
+funziona.
+
+==========================
+
+Codice di calcolo:
+
+prima di toccare il codice di calcolo è necessario leggere anche, perlomeno,
+dalle “Numerical Recipes in C”, di Press ed al.
+			- le parti introduttive
+			- il capitolo sulla minimizzazione non lineare
+			- il capitolo sulla stima di parametri.
+
+Le routines di
+	- allocazione e deallocazione di matrici e vettori
+	- soluzione del sistema lineare
+sono dovute alle "numerical recipes"
+
+Nel codice del modulo "Fit", si usa una convenzione inconsistente
+per rappresentare vettori e matrici: i vettori sono rappresentati
+mediante array indiciati a partire da zero: vett[0..n-1]; le matrici, invece, sono
+rappresentate con un array di puntatori ad array indiciati a partire da 1:
+	matr[1..n][1..n].
+
+Questa e' la regola generale. Ci sono eccezioni. Esaminate la maniera in cui un
+vettore viene allocato per sapere come viene indiciato.
+
+==========================
+
+Per aggiungere modelli predefiniti: non e' una operazione semplice.
+Queste sono le cose che bisogna fare, non necessariamente nell'ordine.
+
+	- Modificare la risorsa "view" del dialog Choose Model per aggiungere i 
+		radio buttons opportuni.
+	- Creare le costanti opportune in UEasyFitDeclarations.p e fit.h
+	- Modificare la procedura PrintSmallHeaderInfo in UEasyFit.DoFit.p

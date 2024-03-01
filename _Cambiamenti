@@ -1,1 +1,231 @@
-Matteo Vaccari, unità di Biomatematica.Cambiamenti in EasyFit 1.0b4.Questo è un sommario dei cambiamenti di EasyFit nella versione 1.0b4 rispetto alle versioni precedenti. Prego chiunque abbia dei problemi nell'utilizzo di EasyFit di prendere nota e comunicarli a Biomatematica. E' di grande importanzaper noi trovare tutti gli errori.Si tenga a mente che EasyFit è ancora in fase di prova, e non è garantito che funzioni correttamente.----------------------------------------------------------------------------- Dalla versione 1.0b3 alla versione 1.0b4 (attuale):	• Supporto per Modelli Esterni (External Models, o XMDLs) simili ai 	comandi esterni (XCMD e XFCN) di HyperCard. La documentazione	(per programmatori Macintosh esperti) si trova nella cartella	External Models.		• Corretti diversi errori nel modulo ƒ–pascal che non consentivano di 	utilizzare le funzioni definite dall'utente		• Corretto un errore nella finestra messages		• Corretti gli alert che segnalano quando una configurazione HW/SW non	e' valida (EasyFit richiede il System 6.0.)		• Corretti i messaggi di errore della procedura di fitting: ora tutti	gli errori vengono segnalati sia sulla finestra Messages che per mezzo	di alert windows.		• Corretto errore nella stampa: non appende piu' pagine bianche alla fine	della stampa della finestra Messages----------------------------------------------------------------------------- Dalla versione 1.0b2 alla versione 1.0b3:	• Quando una tabella viene stampata, ora non vengono piu' stampate le celle		che erano piene, e poi sono state cancellate	• La applicazione genera un alert e si ferma quando la matrice hessiana contiene		dei Not A Number (causati da errori nel modello).			• Ho corretto un errore nella procedura di differenziazione numerica che		causava la matrice hessiana riempirsi di NAN se uno dei parametri valeva zero.	• Ho scoperto il baco che causava errori quando la applicazione in versione		FPU salvava su disco: il formato extended in modo FPU diventa lungo 12 bytes!		Ho risolto facendo si' che non vengano piu' salvati su disco valori extended,		ma solo double (8 bytes).			• Nonostante quanto sopra, la applicazione in versione 1.0b3 è in grado di aprire		i documenti creati dalle versioni 1.0b1 e 1.0b2.		• Dunque ora è disponibile una versione FPU di EasyFit. Il codice di EasyFit		era già ottimizzato; quindi non si noterà un grande guadagno di velocità.		Il guadagno dovrebbe però essere consistente su macchine come un		Macintosh SE (non /30) con coprocessore matematico.	• Aggiunte informazioni sulla finestra messages sui punti di taglio scelti		dalla procedura di peeling.			• Migliorata la responsività della applicazione in MultiFinder durante		l'operazione di Peeling. Quando il peeling viene eseguito in background,		l'applicazione in foreground non si blocca più.----------------------------------------------------------------------------- Dalla versione 1.0b1 alla versione 1.0b2:	• Corretto un piccolo problema nell'aggiornamento della finestra del grafico dei		dati e del modello. ----------------------------------------------------------------------------- Dalla versione 1.0a4 alla versione 1.0b1:	• Il formato dei documenti è cambiato ancora! la nuova versione di EasyFit		non aprirà i documenti creati dalle versioni precedenti. E' possibile		che questo tipo di inconvenienti si ripeta fino a che non avremo		la versione definitiva di EasyFit 1.0. Da allora in poi cercherò di		mantenere la compatibilità con le versioni precedenti.		Per ovviare a questo inconveniente si può aprire il documento con la		versione vecchia e copiare i dati nell'archivio appunti. Quindi si possono		copiare i dati in un documento nuovo creato con la nuovas versione.	• Il linguaggio ƒ–pascal permette di definire sotto-funzioni. Ad esempio:						FUNCTION una_funzione (arg1, arg2, arg3, …);			VAR a, b, c, … ;			BEGIN				[ aggiungere qui una qualsiasi sequenza di istruzioni ]								una_funzione := [espressione che produce il risultato]			END;					E' possibile anche dichiarare argomenti di tipo funzionale:						FUNCTION un_altra_funzione (arg1, FUNCTION f(x));			VAR [...];			BEGIN				foo := f(56);				[...]			END;					Questo esempio mostra una funzione chiamata "un_altra_funzione" che		accetta due argomenti, di cui il primo è un numero, e il secondo è		a sua volta una funzione.				Il significato di questi esempi dovrebbe essere chiaro a chi conosca		il Pascal. Presto scriverò una documentazione più adeguata.		• Nelle "fit options" c'è una nuova opzione, "Beep When Finished", che		permette di essere avvertiti dal beep di sistema quando il fit è finito.		L'avvertimento viene mandato anche nel caso in cui EasyFit sia stata messa		in background (con il MultiFinder). In questo caso appare anche una versione		rimpicciolita della icona di EasyFit sopra la mela nella barra dei menu.			• Durante il fitting è possibile aprire, chiudere, spostare, ingrandire,		rimpicciolire, selezionare e scrollare le varie finestre.			• La stampa delle tabelle è molto migliorata: ora stampiamo anche i titoli		delle righe e delle colonne, più un'intestazione per ogni pagina e il		numero di pagina.		• Il comando "Print all" non c'è più. Al suo posto c'è il comando		"Print All Plots", disponibile solo quando la finestra di fronte è		una finestra grafica (data & model plot oppure std. res. plot.)		• Corretto un errore con lo scrolling tramite "mano" (per scrollare una		tabella con la "mano" basta premere il tasto "option".)			• E' disponibile il comando "Copy" anche per le finestre grafiche.		• Corretto un problema estetico che riguardava lo scrolling automatico		che avviene quando si esplora una tabella con i tasti frecce.		• Accanto al bottone "Export" nella finestra del grafico dei dati e del		modello ora c'è anche il bottone "Export All", che copia in una sola		tabella i dati dei grafici di tutti i soggetti.		• Corretto un errore nel comando "Export" nella finestra del grafico dei		dati e del modello: non veniva copiato l'ultimo dato sperimentale.		• Quando l'apertura di un documento fallisce, ci sono due messaggi		distinti per i due casi: il documento è stato creato da una versione		vecchia di EasyFit, e il documento è danneggiato.	• Il test per verificare se un documento è stato creato da una vecchia		versione di EasyFit è più accurato.			• Nei dialog delle opzioni delle finestre grafiche vengono generati		degli alert quando l'utente commette un errore nella definizione		del dominio del grafico (ad esempio, porre YMin = 0 in un grafico		smilogaritmico.)		• I dialog delle opzioni delle finestre grafiche talvolta non accettavano		la virgola in luogo del punto decimale. Ora sì.		• La finestra del grafico del modello e dei dati viene aggiornata		quando l'utente cambia il modello, o modifica i dati. Questo può		provocare un rallentamento dell'input quando la finestra grafica		è aperta. Basta chiuderla per risolvere questo problema.			• Corretto un baco nel comando "Export": non cancellava il contenuto		precedente del file aperto, qualora il file esistesse gia'.			• Aggiunto il bottone "Export" anche nella finestra dello "User Model".	• I documenti di EasyFit conservano il setup della stampante.----------------------------------------------------------------------------- Dalla versione 1.0a3 alla 1.0a4:	• Ora è possibile utilizzare indifferentemente la virgola o il punto per 		introdurre valori numerici nei dialog box di "Data and Function Plot				Options", "Standard Residuals Plot Options", e "Fit Options".			• Nella finestra del grafico dei residui standardizzati ora la linea che 		indica lo zero dell'ordinata viene disegnata.			• Ora la stampa ad ogni iterazione durante il fitting riporta sia la somma		pesata che quella non pesata.			• Varie piccole modifiche per migliorare l'aspetto grafico dell'output		nella finestra "Messages"		• L'algoritmo che calcola automaticamente il dominio dei grafici ora cerca		sempre di arrotondare a numeri interi.			• Il comando "About EasyFit" ora produce un nuovo dialog box con testo a		scorrimento.			• Corretto un errore nel codice di minimizzazione: il computo della matrice		Hessiana era scorretto qualora i parametri fossero negativi.			• Il dialog di "Define User Model" è molto migliorato.		• Modificato il codice che si occupa di fare rispettare i vincoli durante la		minimizzazione. Fino ad ora non era robusto, nel senso che poteva capitare 		che il modello venisse valutato anche per valori dei parametri non validi.			• Corretti alcuni piccoli problemi che impedivano di incollare nelle tabelle		ritagli provenienti dall'esterno.			• Corretto un errore nel computo della VRT sperimentale per il modello a due		compartimenti IV. Il valore computato nelle versioni precedenti era 		errato.			• La AUC sperimentale per i modelli che prevedono assunzione orale viene		computata in due maniere diverse; ora le due AUC vengono stampate		fianco a fianco.			• La concentrazione al tempo zero per il modello a due compartimenti,		assunzione orale non veniva stampata. Ora sì.----------------------------------------------------------------------------- Dalla versione 1.0a2 alla 1.0a3:	• Corretto un errore nella somma delle aree parziali della AUC sperimentale:		era possibile ottenere un numero completamente sbagliato.	• Corretto un errore introdotto recentemente come effetto collaterale di una 		modifica: poteveno venire generati errori di sistema quando nella tabella		dei dati sperimentali c'erano dei valori missing.		• Ora nel calcolo della AUC sperimentale viene stampata anche la colonna dei		totali parziali delle aree.		
+
+
+Matteo Vaccari, unità di Biomatematica.
+
+Cambiamenti in EasyFit 1.0b4.
+
+Questo è un sommario dei cambiamenti di EasyFit nella versione 1.0b4 rispetto 
+alle versioni precedenti. Prego chiunque abbia dei problemi nell'utilizzo di 
+EasyFit di prendere nota e comunicarli a Biomatematica. E' di grande importanza
+per noi trovare tutti gli errori.
+
+Si tenga a mente che EasyFit è ancora in fase di prova, e non è garantito che 
+funzioni correttamente.
+
+---------------------------------------------------------------------------
+-- Dalla versione 1.0b3 alla versione 1.0b4 (attuale):
+
+	• Supporto per Modelli Esterni (External Models, o XMDLs) simili ai 
+	comandi esterni (XCMD e XFCN) di HyperCard. La documentazione
+	(per programmatori Macintosh esperti) si trova nella cartella
+	External Models.
+	
+	• Corretti diversi errori nel modulo ƒ–pascal che non consentivano di 
+	utilizzare le funzioni definite dall'utente
+	
+	• Corretto un errore nella finestra messages
+	
+	• Corretti gli alert che segnalano quando una configurazione HW/SW non
+	e' valida (EasyFit richiede il System 6.0.)
+	
+	• Corretti i messaggi di errore della procedura di fitting: ora tutti
+	gli errori vengono segnalati sia sulla finestra Messages che per mezzo
+	di alert windows.
+	
+	• Corretto errore nella stampa: non appende piu' pagine bianche alla fine
+	della stampa della finestra Messages
+
+---------------------------------------------------------------------------
+-- Dalla versione 1.0b2 alla versione 1.0b3:
+
+	• Quando una tabella viene stampata, ora non vengono piu' stampate le celle
+		che erano piene, e poi sono state cancellate
+
+	• La applicazione genera un alert e si ferma quando la matrice hessiana contiene
+		dei Not A Number (causati da errori nel modello).
+		
+	• Ho corretto un errore nella procedura di differenziazione numerica che
+		causava la matrice hessiana riempirsi di NAN se uno dei parametri valeva zero.
+
+	• Ho scoperto il baco che causava errori quando la applicazione in versione
+		FPU salvava su disco: il formato extended in modo FPU diventa lungo 12 bytes!
+		Ho risolto facendo si' che non vengano piu' salvati su disco valori extended,
+		ma solo double (8 bytes).
+		
+	• Nonostante quanto sopra, la applicazione in versione 1.0b3 è in grado di aprire
+		i documenti creati dalle versioni 1.0b1 e 1.0b2.
+	
+	• Dunque ora è disponibile una versione FPU di EasyFit. Il codice di EasyFit
+		era già ottimizzato; quindi non si noterà un grande guadagno di velocità.
+		Il guadagno dovrebbe però essere consistente su macchine come un
+		Macintosh SE (non /30) con coprocessore matematico.
+
+	• Aggiunte informazioni sulla finestra messages sui punti di taglio scelti
+		dalla procedura di peeling.
+		
+	• Migliorata la responsività della applicazione in MultiFinder durante
+		l'operazione di Peeling. Quando il peeling viene eseguito in background,
+		l'applicazione in foreground non si blocca più.
+
+---------------------------------------------------------------------------
+-- Dalla versione 1.0b1 alla versione 1.0b2:
+
+	• Corretto un piccolo problema nell'aggiornamento della finestra del grafico dei
+		dati e del modello. 
+
+---------------------------------------------------------------------------
+-- Dalla versione 1.0a4 alla versione 1.0b1:
+
+	• Il formato dei documenti è cambiato ancora! la nuova versione di EasyFit
+		non aprirà i documenti creati dalle versioni precedenti. E' possibile
+		che questo tipo di inconvenienti si ripeta fino a che non avremo
+		la versione definitiva di EasyFit 1.0. Da allora in poi cercherò di
+		mantenere la compatibilità con le versioni precedenti.
+		Per ovviare a questo inconveniente si può aprire il documento con la
+		versione vecchia e copiare i dati nell'archivio appunti. Quindi si possono
+		copiare i dati in un documento nuovo creato con la nuovas versione.
+
+	• Il linguaggio ƒ–pascal permette di definire sotto-funzioni. Ad esempio:
+			
+			FUNCTION una_funzione (arg1, arg2, arg3, …);
+			VAR a, b, c, … ;
+			BEGIN
+				[ aggiungere qui una qualsiasi sequenza di istruzioni ]
+				
+				una_funzione := [espressione che produce il risultato]
+			END;
+			
+		E' possibile anche dichiarare argomenti di tipo funzionale:
+			
+			FUNCTION un_altra_funzione (arg1, FUNCTION f(x));
+			VAR [...];
+			BEGIN
+				foo := f(56);
+				[...]
+			END;
+			
+		Questo esempio mostra una funzione chiamata "un_altra_funzione" che
+		accetta due argomenti, di cui il primo è un numero, e il secondo è
+		a sua volta una funzione.
+		
+		Il significato di questi esempi dovrebbe essere chiaro a chi conosca
+		il Pascal. Presto scriverò una documentazione più adeguata.
+	
+	• Nelle "fit options" c'è una nuova opzione, "Beep When Finished", che
+		permette di essere avvertiti dal beep di sistema quando il fit è finito.
+		L'avvertimento viene mandato anche nel caso in cui EasyFit sia stata messa
+		in background (con il MultiFinder). In questo caso appare anche una versione
+		rimpicciolita della icona di EasyFit sopra la mela nella barra dei menu.
+		
+	• Durante il fitting è possibile aprire, chiudere, spostare, ingrandire,
+		rimpicciolire, selezionare e scrollare le varie finestre.
+		
+	• La stampa delle tabelle è molto migliorata: ora stampiamo anche i titoli
+		delle righe e delle colonne, più un'intestazione per ogni pagina e il
+		numero di pagina.
+	
+	• Il comando "Print all" non c'è più. Al suo posto c'è il comando
+		"Print All Plots", disponibile solo quando la finestra di fronte è
+		una finestra grafica (data & model plot oppure std. res. plot.)
+	
+	• Corretto un errore con lo scrolling tramite "mano" (per scrollare una
+		tabella con la "mano" basta premere il tasto "option".)
+		
+	• E' disponibile il comando "Copy" anche per le finestre grafiche.
+	
+	• Corretto un problema estetico che riguardava lo scrolling automatico
+		che avviene quando si esplora una tabella con i tasti frecce.
+	
+	• Accanto al bottone "Export" nella finestra del grafico dei dati e del
+		modello ora c'è anche il bottone "Export All", che copia in una sola
+		tabella i dati dei grafici di tutti i soggetti.
+	
+	• Corretto un errore nel comando "Export" nella finestra del grafico dei
+		dati e del modello: non veniva copiato l'ultimo dato sperimentale.
+	
+	• Quando l'apertura di un documento fallisce, ci sono due messaggi
+		distinti per i due casi: il documento è stato creato da una versione
+		vecchia di EasyFit, e il documento è danneggiato.
+
+	• Il test per verificare se un documento è stato creato da una vecchia
+		versione di EasyFit è più accurato.
+		
+	• Nei dialog delle opzioni delle finestre grafiche vengono generati
+		degli alert quando l'utente commette un errore nella definizione
+		del dominio del grafico (ad esempio, porre YMin = 0 in un grafico
+		smilogaritmico.)
+	
+	• I dialog delle opzioni delle finestre grafiche talvolta non accettavano
+		la virgola in luogo del punto decimale. Ora sì.
+	
+	• La finestra del grafico del modello e dei dati viene aggiornata
+		quando l'utente cambia il modello, o modifica i dati. Questo può
+		provocare un rallentamento dell'input quando la finestra grafica
+		è aperta. Basta chiuderla per risolvere questo problema.
+		
+	• Corretto un baco nel comando "Export": non cancellava il contenuto
+		precedente del file aperto, qualora il file esistesse gia'.
+		
+	• Aggiunto il bottone "Export" anche nella finestra dello "User Model".
+
+	• I documenti di EasyFit conservano il setup della stampante.
+
+
+---------------------------------------------------------------------------
+-- Dalla versione 1.0a3 alla 1.0a4:
+
+	• Ora è possibile utilizzare indifferentemente la virgola o il punto per 
+		introdurre valori numerici nei dialog box di "Data and Function Plot		
+		Options", "Standard Residuals Plot Options", e "Fit Options".
+		
+	• Nella finestra del grafico dei residui standardizzati ora la linea che 
+		indica lo zero dell'ordinata viene disegnata.
+		
+	• Ora la stampa ad ogni iterazione durante il fitting riporta sia la somma
+		pesata che quella non pesata.
+		
+	• Varie piccole modifiche per migliorare l'aspetto grafico dell'output
+		nella finestra "Messages"
+	
+	• L'algoritmo che calcola automaticamente il dominio dei grafici ora cerca
+		sempre di arrotondare a numeri interi.
+		
+	• Il comando "About EasyFit" ora produce un nuovo dialog box con testo a
+		scorrimento.
+		
+	• Corretto un errore nel codice di minimizzazione: il computo della matrice
+		Hessiana era scorretto qualora i parametri fossero negativi.
+		
+	• Il dialog di "Define User Model" è molto migliorato.
+	
+	• Modificato il codice che si occupa di fare rispettare i vincoli durante la
+		minimizzazione. Fino ad ora non era robusto, nel senso che poteva capitare 
+		che il modello venisse valutato anche per valori dei parametri non validi.
+		
+	• Corretti alcuni piccoli problemi che impedivano di incollare nelle tabelle
+		ritagli provenienti dall'esterno.
+		
+	• Corretto un errore nel computo della VRT sperimentale per il modello a due
+		compartimenti IV. Il valore computato nelle versioni precedenti era 
+		errato.
+		
+	• La AUC sperimentale per i modelli che prevedono assunzione orale viene
+		computata in due maniere diverse; ora le due AUC vengono stampate
+		fianco a fianco.
+		
+	• La concentrazione al tempo zero per il modello a due compartimenti,
+		assunzione orale non veniva stampata. Ora sì.
+
+---------------------------------------------------------------------------
+-- Dalla versione 1.0a2 alla 1.0a3:
+
+	• Corretto un errore nella somma delle aree parziali della AUC sperimentale:
+		era possibile ottenere un numero completamente sbagliato.
+
+	• Corretto un errore introdotto recentemente come effetto collaterale di una 
+		modifica: poteveno venire generati errori di sistema quando nella tabella
+		dei dati sperimentali c'erano dei valori missing.
+	
+	• Ora nel calcolo della AUC sperimentale viene stampata anche la colonna dei
+		totali parziali delle aree.
+		
